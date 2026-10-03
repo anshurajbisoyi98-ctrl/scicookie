@@ -11,11 +11,14 @@ else:
 
 
 @pytest.mark.parametrize("project_layout", ["src", "flat"])
-def test_flit_metadata(cookies, project_layout):
-    """Flit must receive PEP 621 metadata and the actual module name."""
+@pytest.mark.parametrize(
+    "build_system", ["flit", "mesonpy", "pdm", "hatch", "maturin"]
+)
+def test_build_metadata(cookies, project_layout, build_system):
+    """Build backends must receive valid PEP 621 metadata."""
     result = cookies.bake(
         extra_context={
-            "build_system": "flit",
+            "build_system": build_system,
             "project_layout": project_layout,
             "package_slug": "different_module",
         }
@@ -25,7 +28,8 @@ def test_flit_metadata(cookies, project_layout):
         (result.project_path / "pyproject.toml").read_text()
     )
     assert "packages" not in metadata["project"]
-    assert metadata["tool"]["flit"]["module"]["name"] == "different_module"
+    if build_system == "flit":
+        assert metadata["tool"]["flit"]["module"]["name"] == "different_module"
 
 
 @pytest.mark.parametrize("build_system", ["poetry", "uv"])
