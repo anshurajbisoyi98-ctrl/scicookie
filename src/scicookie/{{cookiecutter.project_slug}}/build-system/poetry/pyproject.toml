@@ -132,8 +132,8 @@ pydata-sphinx-theme = ">= 0.15.3"
 {%- elif cookiecutter.documentation_engine == 'quarto' %}
 quarto-cli = ">=1.5.56"
 quartodoc = ">=0.7.5"
-{% endif -%}
-{%- if cookiecutter.use_makim == "yes" -%}
+{% endif %}
+{% if cookiecutter.use_makim == "yes" -%}
 makim = "1.27.0"
 {% endif -%}
 virtualenv = ">=20.34"

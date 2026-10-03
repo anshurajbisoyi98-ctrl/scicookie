@@ -1,11 +1,17 @@
 """Test generation of projects that use Zensical documentation."""
 
 import json
+import sys
 
 from pathlib import Path
 
 import pytest
 import yaml
+
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomli as tomllib
 
 
 @pytest.mark.parametrize("build_system", ["poetry", "uv"])
@@ -31,6 +37,7 @@ def test_zensical_project(cookies, build_system, project_layout):
     assert not (project / "mkdocs.yaml").exists()
     assert not (project / "scripts/gen_ref_nav.py").exists()
     metadata = (project / "pyproject.toml").read_text()
+    tomllib.loads(metadata)
     assert "zensical" in metadata
     assert "mkdocs" not in metadata
     makefile = (project / "Makefile").read_text()
