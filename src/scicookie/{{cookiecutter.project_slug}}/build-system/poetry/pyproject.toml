@@ -121,7 +121,7 @@ nbsphinx = ">=0.9.2"
 pandoc = ">=2.3"
 {# keep this line here #}
 {%- elif cookiecutter.documentation_engine == 'jupyter-book' %}
-jupyter-book = ">=0.15.1"
+jupyter-book = ">=0.15.1,<2"
 myst-parser = ">=0.18.1"
 {%- if cookiecutter.jupyter_book_theme == 'readthedocs-sphinx-theme'%}
 sphinx-rtd-theme = ">= 1.2.2"
@@ -132,9 +132,13 @@ pydata-sphinx-theme = ">= 0.15.3"
 {%- elif cookiecutter.documentation_engine == 'quarto' %}
 quarto-cli = ">=1.5.56"
 quartodoc = ">=0.7.5"
+# Quartodoc still uses the Griffe 1.x docstring parser API.
+griffe = "<2"
 {% endif %}
 {% if cookiecutter.use_makim == "yes" -%}
 makim = "1.27.0"
+# Makim imports Click, but does not declare it as a dependency.
+click = ">=8"
 {% endif -%}
 virtualenv = ">=20.34"
 
